@@ -8,14 +8,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static java.lang.Math.abs;
 
 public class RecordListAdapter extends BaseAdapter {
 
     private Context context;
     private int layout;
-    private ArrayList<Model> recordList;
+    private ArrayList<Task> recordList;
 
-    public RecordListAdapter(Context context, int layout, ArrayList<Model> recordList) {
+    public RecordListAdapter(Context context, int layout, ArrayList<Task> recordList) {
         this.context = context;
         this.layout = layout;
         this.recordList = recordList;
@@ -37,7 +40,7 @@ public class RecordListAdapter extends BaseAdapter {
     }
 
     private class ViewHolder{
-        TextView txtTask, txtDuration, txtStatus;
+        TextView txtName, txtDuration, txtPriority;
     }
 
     @Override
@@ -49,20 +52,30 @@ public class RecordListAdapter extends BaseAdapter {
         if (row==null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(layout, null);
-            holder.txtTask = row.findViewById(R.id.txtTask);
+            holder.txtName = row.findViewById(R.id.txtName);
             holder.txtDuration = row.findViewById(R.id.txtDuration);
-            holder.txtStatus = row.findViewById(R.id.txtStatus);
+            holder.txtPriority = row.findViewById(R.id.txtPriority);
             row.setTag(holder);
         }
         else {
             holder = (ViewHolder)row.getTag();
         }
 
-        Model model = recordList.get(i);
+        Task task = recordList.get(i);
 
-        holder.txtTask.setText(model.getTask());
-        holder.txtDuration.setText(model.getDuration());
-        holder.txtStatus.setText(model.getStatus());
+        long diff = task.getDeadline().getTime().getTime() - new Date().getTime();
+        boolean neg = diff > 0;
+        long minutes = abs(diff)/1000/60;
+        String sign = "";
+        if(!neg){
+            sign = "- ";
+        }
+        // format DAYS:HOURS:MINUTES
+        String time =  sign + minutes/24/60 + ":" + minutes/60%24 + ":" +minutes%60;
+
+        holder.txtName.setText(task.getName());
+        holder.txtDuration.setText( time);
+        holder.txtPriority.setText(task.getPriority().toString());
 
         return row;
     }

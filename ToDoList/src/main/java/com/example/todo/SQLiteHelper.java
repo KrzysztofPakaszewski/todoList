@@ -6,7 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class SQLiteHelper extends SQLiteOpenHelper{
+
+    public static SimpleDateFormat format = new SimpleDateFormat("MMM/d//y H:m");
 
     //constructor
     SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
@@ -18,34 +23,49 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         database.execSQL(sql);
     }
 
+    public void setupDatabase(){
+        SQLiteDatabase database = getWritableDatabase();
+
+        String sql = "CREATE TABLE IF NOT EXISTS TASKS(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name VARCHAR, " +
+                "description VARCHAR, " +
+                "priority VARCHAR, " +
+                "deadline VARCHAR)";
+
+        database.execSQL(sql);
+    }
+
     //insertData
-    public void insertData(String task, String duration, String status){
+    public void insertData(String name, String description, Task.Priority priority, Calendar deadline){
         SQLiteDatabase database = getWritableDatabase();
         //query to insert record in database table
-        String sql = "INSERT INTO RECORD VALUES(NULL, ?, ?, ?)"; //where "RECORD" is table name in database we will create in mainActivity
+        String sql = "INSERT INTO TASKS VALUES(NULL, ?, ?, ?, ?)"; //where "TASKS" is table name
 
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
 
-        statement.bindString(1, task);
-        statement.bindString(2, duration);
-        statement.bindString(3, status);
+        statement.bindString(1, name);
+        statement.bindString(2, description);
+        statement.bindString(3, priority.toString());
+        statement.bindString(4, format.format(deadline.getTime()));
 
         statement.executeInsert();
     }
 
     //updateData
-    public void updateData(String task, String duration, String status, int id){
+    public void updateData(String name, String description, Task.Priority priority, Calendar deadline, int id){
         SQLiteDatabase database = getWritableDatabase();
         //query to update record
-        String sql = "UPDATE RECORD SET task=?, duration=?, status=? WHERE id=?";
+        String sql = "UPDATE TASKS SET name=?, description=?, priority=?, deadline=? WHERE id=?";
 
         SQLiteStatement statement = database.compileStatement(sql);
 
-        statement.bindString(1, task);
-        statement.bindString(2, duration);
-        statement.bindString(3, status);
-        statement.bindDouble(4, (double)id);
+        statement.bindString(1, name);
+        statement.bindString(2, description);
+        statement.bindString(3, priority.toString());
+        statement.bindString(4, format.format(deadline));
+        statement.bindDouble(5, (double)id);
 
         statement.execute();
         database.close();
@@ -55,7 +75,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     public void deleteData(int id){
         SQLiteDatabase database = getWritableDatabase();
         //query to delete record using id
-        String sql = "DELETE FROM RECORD WHERE id=?";
+        String sql = "DELETE FROM TASKS WHERE id=?";
 
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();

@@ -18,13 +18,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RecordListActivity extends AppCompatActivity {
 
 
     ListView mListView;
-    ArrayList<Model> mList;
+    ArrayList<Task> mList;
     RecordListAdapter mAdapter = null;
 
     public static SQLiteHelper mSQLiteHelper;
@@ -35,7 +38,7 @@ public class RecordListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record_list);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Record List");
+        actionBar.setTitle("Task List");
 
         mListView = findViewById(R.id.listView);
         mList = new ArrayList<>();
@@ -46,9 +49,10 @@ public class RecordListActivity extends AppCompatActivity {
         mSQLiteHelper = new SQLiteHelper(this, "RECORDDB.sqlite", null, 1);
 
         //creating table in database
-        mSQLiteHelper.queryData("CREATE TABLE IF NOT EXISTS RECORD(id INTEGER PRIMARY KEY AUTOINCREMENT, task VARCHAR, duration VARCHAR, status VARCHAR)");
+        mSQLiteHelper.setupDatabase();
 
         //Insert 2 sample tasks, put into pref so it can only added once
+        /*
         SharedPreferences firstTime = getSharedPreferences("FirstTime", MODE_PRIVATE);
         if (!firstTime.getBoolean("isFirstTime", false)) {
             //your code goes here
@@ -70,17 +74,24 @@ public class RecordListActivity extends AppCompatActivity {
             editor.putBoolean("isFirstTime", true);
             editor.apply();
         }
+         */
 
         //get all data from sqlite
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM RECORD");
+        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS");
         mList.clear();
         while (cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String task = cursor.getString(1);
-            String duration = cursor.getString(2);
-            String status = cursor.getString(3);
-            //add to list
-            mList.add(new Model(id, task, duration, status));
+            try{
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                Task.Priority priority = Task.Priority.valueOf(cursor.getString(3));
+                Calendar deadline = Calendar.getInstance();
+                deadline.setTime(SQLiteHelper.format.parse(cursor.getString(4)));
+                //add to list
+                mList.add(new Task(id, name, description, priority, deadline));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
         }
         mAdapter.notifyDataSetChanged();
         if (mList.size()==0){
@@ -102,7 +113,7 @@ public class RecordListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0){
                             //update
-                            Cursor c = MainActivity.mSQLiteHelper.getData("SELECT id FROM RECORD");
+                            Cursor c = MainActivity.mSQLiteHelper.getData("SELECT id FROM TASKS");
                             ArrayList<Integer> arrID = new ArrayList<Integer>();
                             while (c.moveToNext()){
                                 arrID.add(c.getInt(0));
@@ -112,7 +123,7 @@ public class RecordListActivity extends AppCompatActivity {
                         }
                         if (i==1){
                             //delete
-                            Cursor c = MainActivity.mSQLiteHelper.getData("SELECT id FROM RECORD");
+                            Cursor c = MainActivity.mSQLiteHelper.getData("SELECT id FROM TASKS");
                             ArrayList<Integer> arrID = new ArrayList<Integer>();
                             while (c.moveToNext()){
                                 arrID.add(c.getInt(0));
@@ -167,15 +178,15 @@ public class RecordListActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.update_dialog);
         dialog.setTitle("Update");
 
-        final EditText edtTask = dialog.findViewById(R.id.edtTask);
-        final EditText edtDuration = dialog.findViewById(R.id.edtDuration);
+        final EditText edtTask = dialog.findViewById(R.id.edtName);
+        final EditText edtDuration = dialog.findViewById(R.id.edtDescription);
         final EditText edtStatus = dialog.findViewById(R.id.edtStatus);
         Button btnUpdate = dialog.findViewById(R.id.btnUpdate);
 
 //        Toast.makeText(activity, ""+position, Toast.LENGTH_SHORT).show();
 
         int iddd = position;
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM RECORD WHERE id="+iddd);
+        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS WHERE id="+iddd);
         mList.clear();
         while (cursor.moveToNext()){
             int id = cursor.getInt(0);
@@ -186,7 +197,7 @@ public class RecordListActivity extends AppCompatActivity {
             String status = cursor.getString(3);
             edtStatus.setText(status);
             //add to list
-            mList.add(new Model(id, task, duration, status));
+            //mList.add(new Task(id, task, duration, status));
         }
 
         //set width of dialog
@@ -200,11 +211,11 @@ public class RecordListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    mSQLiteHelper.updateData(
-                            edtTask.getText().toString().trim(),
-                            edtDuration.getText().toString().trim(),
-                            edtStatus.getText().toString().trim(),
-                            position);
+                 //   mSQLiteHelper.updateData(
+                         //   edtTask.getText().toString().trim(),
+                       //     edtDuration.getText().toString().trim(),
+                     //       edtStatus.getText().toString().trim(),
+                   //         position);
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Update success", Toast.LENGTH_SHORT).show();
                 }
@@ -219,15 +230,21 @@ public class RecordListActivity extends AppCompatActivity {
 
     private void updateRecordList() {
         //get all data from sqlite
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM RECORD");
+        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS");
         mList.clear();
         while (cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String task = cursor.getString(1);
-            String duration = cursor.getString(2);
-            String status = cursor.getString(3);
-
-            mList.add(new Model(id, task, duration, status));
+            try{
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                Task.Priority priority = Task.Priority.valueOf(cursor.getString(3));
+                Calendar deadline = Calendar.getInstance();
+                deadline.setTime(SQLiteHelper.format.parse(cursor.getString(4)));
+                //add to list
+                mList.add(new Task(id, name, description, priority, deadline));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
         }
         mAdapter.notifyDataSetChanged();
     }

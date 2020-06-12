@@ -25,29 +25,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TableRow>
+
                     <TextView
-                        android:text="Task: "
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Name: "
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
                     <TextView
-                        android:id="@+id/txtTask"
-                        android:text="Task Here"
-                        android:textSize="20sp"
-                        android:textColor="#000"
+                        android:id="@+id/txtName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Name Here"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
                 </TableRow>
                 <TableRow>
+
                     <TextView
-                        android:text="Duration: "
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Remaining time: "
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                     <TextView
                         android:id="@+id/txtDuration"
                         android:text="Duration Here"
@@ -57,20 +60,22 @@
                         android:layout_height="wrap_content"/>
                 </TableRow>
                 <TableRow>
+
                     <TextView
-                        android:text="Status: "
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:textStyle="bold"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Priority: "
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
                     <TextView
-                        android:id="@+id/txtStatus"
-                        android:text="Status Here"
-                        android:textSize="20sp"
-                        android:textColor="#000"
+                        android:id="@+id/txtPriority"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:text="Priority Here"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
