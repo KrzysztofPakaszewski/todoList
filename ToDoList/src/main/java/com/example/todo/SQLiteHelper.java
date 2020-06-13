@@ -11,7 +11,7 @@ import java.util.Calendar;
 
 public class SQLiteHelper extends SQLiteOpenHelper{
 
-    public static SimpleDateFormat format = new SimpleDateFormat("MMM/d//y H:m");
+    public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     //constructor
     SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){

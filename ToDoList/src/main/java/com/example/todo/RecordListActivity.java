@@ -77,7 +77,7 @@ public class RecordListActivity extends AppCompatActivity {
          */
 
         //get all data from sqlite
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS");
+        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS ORDER BY deadline ASC");
         mList.clear();
         while (cursor.moveToNext()){
             try{
@@ -230,7 +230,7 @@ public class RecordListActivity extends AppCompatActivity {
 
     private void updateRecordList() {
         //get all data from sqlite
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS");
+        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS ORDER BY deadline ASC");
         mList.clear();
         while (cursor.moveToNext()){
             try{
