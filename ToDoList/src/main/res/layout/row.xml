@@ -13,72 +13,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center_vertical">
+        android:weightSum="3">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp">
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TableRow>
+            android:layout_weight="1"
+            android:text="Name Here"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Name: "
-                        android:textColor="#000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtPriority"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Priority Here"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/txtName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Name Here"
-                        android:textColor="#000"
-                        android:textSize="20sp" />
-                </TableRow>
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Remaining time: "
-                        android:textColor="#000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/txtDuration"
-                        android:text="Duration Here"
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </TableRow>
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Priority: "
-                        android:textColor="#000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtPriority"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Priority Here"
-                        android:textColor="#000"
-                        android:textSize="20sp" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/txtDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Duration Here"
+            android:textAlignment="textEnd"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

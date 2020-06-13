@@ -175,7 +175,7 @@ public class RecordListActivity extends AppCompatActivity {
 
     private void showDialogUpdate(Activity activity, final int position){
         final Dialog dialog = new Dialog(activity);
-        dialog.setContentView(R.layout.update_dialog);
+        dialog.setContentView(R.layout.activity_main);
         dialog.setTitle("Update");
 
         final EditText edtTask = dialog.findViewById(R.id.edtName);

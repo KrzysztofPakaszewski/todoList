@@ -1,5 +1,7 @@
 package com.example.todo;
 
+import android.graphics.Color;
+
 import java.util.Calendar;
 
 public class Task {
@@ -19,7 +21,20 @@ public class Task {
     }
 
     public enum Priority {
-        VERYLOW, LOW, MEDIUM, HIGH, VERYHIGH
+        VERYLOW(Color.argb(255,0,255,0)),
+        LOW(Color.argb(255,180,255,0)),
+        MEDIUM(Color.argb(255,255,255,0)),
+        HIGH(Color.argb(255,255,180,0)),
+        VERYHIGH(Color.argb(255,255,0,0));
+
+        private final int value;
+
+        Priority(final int newValue){
+            value = newValue;
+        }
+        public int getValue(){
+            return value;
+        }
     }
 
     public int getId() {
