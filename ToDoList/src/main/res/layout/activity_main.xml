@@ -12,45 +12,56 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/edtTask"
+            android:id="@+id/edtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Task"
-            android:layout_centerHorizontal="true"
-            android:ems="10"/>
-        <EditText
-            android:id="@+id/edtDuration"
-            android:layout_below="@id/edtTask"
-            android:hint="Duration"
             android:layout_centerHorizontal="true"
             android:ems="10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:hint="Name" />
+
         <EditText
-            android:id="@+id/edtStatus"
-            android:layout_below="@id/edtDuration"
-            android:hint="Status"
-            android:text="New"
+            android:id="@+id/edtDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtName"
             android:layout_centerHorizontal="true"
             android:ems="10"
+            android:hint="Description" />
+
+        <Spinner
+            android:id="@+id/edtPriority"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtDescription"
+            android:layout_centerHorizontal="true"
+            android:spinnerMode="dropdown" />
+
         <Button
             android:id="@+id/btnAdd"
-            android:layout_below="@id/edtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectTime"
             android:layout_centerHorizontal="true"
             android:minWidth="160dp"
-            android:text="Save"
+            android:text="Save" />
+
+        <TextView
+            android:id="@+id/selectDate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btnList"
-            android:layout_below="@id/btnAdd"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edtPriority"
             android:layout_centerHorizontal="true"
-            android:minWidth="160dp"
-            android:text="To do list"
+            android:text="@string/dateSelect"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/selectTime"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectDate"
+            android:layout_centerHorizontal="true"
+            android:text="@string/timeSelect"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

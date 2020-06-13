@@ -8,13 +8,13 @@
     android:padding="10dp">
 
     <EditText
-        android:id="@+id/edtTask"
+        android:id="@+id/edtName"
         android:hint="Task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"/>
     <EditText
-        android:id="@+id/edtDuration"
+        android:id="@+id/edtDescription"
         android:hint="Duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
