@@ -1,6 +1,5 @@
 package com.example.todo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,20 +13,27 @@ public class DetailFragment extends Fragment {
     TextView mName, mPriority, mDeadline, mDescription;
     Button mFinish;
 
+    int position = -1;
+
     Task task;
 
-    OnDeleteListener callback;
+    DetailFragmentListener callback;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState){
 
         View view = layoutInflater.inflate(R.layout.detail_fragment, container, false);
+        callback = (DetailActivity) getActivity();
 
         mName = view.findViewById(R.id.dName);
         mPriority = view.findViewById(R.id.dPriority);
         mDeadline = view.findViewById(R.id.dDeadline);
         mDescription = view.findViewById(R.id.dDescription);
         mFinish = view.findViewById(R.id.dFinish);
+
+        if(task == null) {
+            task = callback.getTask();
+        }
 
         updateView();
 
@@ -50,7 +56,8 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public interface OnDeleteListener{
+    public interface DetailFragmentListener{
         void onDelete(int id);
+        Task getTask();
     }
 }
