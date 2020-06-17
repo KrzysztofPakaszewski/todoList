@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -120,13 +121,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Empty field", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
-                        mSQLiteHelper.insertData(
+                        Task newTask = new Task(0,
                                 mEdtName.getText().toString().trim(),
                                 mEdtDescription.getText().toString().trim(),
                                 (Task.Priority) mEdtPriority.getSelectedItem(),
-                                date
-                        );
-                        Toast.makeText(MainActivity.this, "Added successfully", Toast.LENGTH_SHORT).show();
+                                date);
+                        TaskCreateAsyncTask async = new TaskCreateAsyncTask();
+                        async.execute(newTask);
+
                         //reset views
                         mEdtName.setText("");
                         mEdtDescription.setText("");
@@ -141,4 +143,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    private class TaskCreateAsyncTask extends AsyncTask<Task, Task, String> {
+
+        @Override
+        protected String doInBackground(Task... tasks) {
+
+            Task task = tasks[0];
+
+            mSQLiteHelper.insertData(task.getName(), task.getDescription(), task.getPriority(), task.getDeadline());
+
+            return "Success";
+        }
+
+        @Override
+        protected void onPostExecute(String string){
+            Toast.makeText(MainActivity.this, "Added successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
+
