@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -69,6 +70,28 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         statement.execute();
         database.close();
+    }
+
+    public Task getTask(String id){
+        SQLiteDatabase database = getReadableDatabase();
+
+        String sql = "SELECT * FROM TASKS WHERE id="+ id;
+        Cursor cursor = database.rawQuery(sql,null);
+        while (cursor.moveToNext()){
+            try {
+                int newId = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                Task.Priority priority = Task.Priority.valueOf(cursor.getString(3));
+                Calendar deadline = Calendar.getInstance();
+                deadline.setTime(format.parse(cursor.getString(4)));
+
+                return new Task(newId, name, description, priority, deadline);
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     //deleteData
