@@ -2,6 +2,9 @@ package com.example.todo;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -35,6 +38,24 @@ public class MainActivity extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener mTimeSetListener;
 
     public static SQLiteHelper mSQLiteHelper;
+
+
+    private BroadcastReceiver receiver = new SimpleBroadcastReceiver();
+
+    private IntentFilter intentFilter = new IntentFilter(Intent.ACTION_INSERT);
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        this.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        this.unregisterReceiver(receiver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +178,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String string){
-            Toast.makeText(MainActivity.this, "Added successfully", Toast.LENGTH_SHORT).show();
+            super.onPostExecute(string);
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_INSERT);
+            sendBroadcast(intent);
         }
     }
 }
