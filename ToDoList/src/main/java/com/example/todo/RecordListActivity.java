@@ -2,10 +2,8 @@ package com.example.todo;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -100,41 +98,13 @@ public class RecordListActivity extends AppCompatActivity {
             Toast.makeText(this, "No record found...", Toast.LENGTH_SHORT).show();
         }
 
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                //alert dialog to display options of update and delete
-                final CharSequence[] items = {"Update", "Delete"};
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(RecordListActivity.this);
-
-                dialog.setTitle("Choose an action");
-                dialog.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 0){
-                            //update
-                            Cursor c = MainActivity.mSQLiteHelper.getData("SELECT id FROM TASKS");
-                            ArrayList<Integer> arrID = new ArrayList<Integer>();
-                            while (c.moveToNext()){
-                                arrID.add(c.getInt(0));
-                            }
-                            //show update dialog
-                            showDialogUpdate(RecordListActivity.this, arrID.get(position));
-                        }
-                        if (i==1){
-                            //delete
-                            Cursor c = MainActivity.mSQLiteHelper.getData("SELECT id FROM TASKS");
-                            ArrayList<Integer> arrID = new ArrayList<Integer>();
-                            while (c.moveToNext()){
-                                arrID.add(c.getInt(0));
-                            }
-                            showDialogDelete(arrID.get(position));
-                        }
-                    }
-                });
-                dialog.show();
-                return true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(RecordListActivity.this, DetailActivity.class);
+                intent.putExtra("id", String.valueOf(mList.get(position).getId()));
+                startActivity(intent);
+                finish();
             }
         });
 
