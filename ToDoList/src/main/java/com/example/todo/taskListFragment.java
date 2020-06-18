@@ -70,6 +70,7 @@ public class taskListFragment extends ListFragment {
             details =  new DetailFragment();
             details.position = index;
             details.task = tasks.get(index);
+            callback.setId(tasks.get(index).getId());
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.details, details);
@@ -80,6 +81,7 @@ public class taskListFragment extends ListFragment {
 
     public interface TaskListInterface{
         ArrayList<Task> getTasks();
+        void setId(int id);
     }
 }
 

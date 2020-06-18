@@ -38,7 +38,11 @@ public class DetailActivity extends FragmentActivity implements DetailFragment.D
         sqLiteHelper = new SQLiteHelper(this, "RECORDDB.sqlite", null, 1);
 
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
+        if(savedInstanceState != null){
+            id = savedInstanceState.getString("id");
+        }else {
+            id = intent.getStringExtra("id");
+        }
 
         setContentView(R.layout.detail_activity);
 
@@ -48,6 +52,12 @@ public class DetailActivity extends FragmentActivity implements DetailFragment.D
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle("Details");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("id", this.id);
     }
 
     @Override
@@ -81,5 +91,10 @@ public class DetailActivity extends FragmentActivity implements DetailFragment.D
             }
         }
         return tasks;
+    }
+
+    @Override
+    public void setId(int id){
+        this.id = String.valueOf(id);
     }
 }
