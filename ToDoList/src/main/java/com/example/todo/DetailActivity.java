@@ -51,7 +51,6 @@ public class DetailActivity extends FragmentActivity implements DetailFragment.D
         ActionBar actionBar = appCompatDelegate.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle("Details");
     }
 
     @Override

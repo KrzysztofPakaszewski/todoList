@@ -14,16 +14,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     public static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    //constructor
+    //constructor Create a helper object to create, open, and/or manage a database.
     SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
         super(context, name, factory, version);
     }
-
-    public void queryData(String sql){
-        SQLiteDatabase database = getWritableDatabase();
-        database.execSQL(sql);
-    }
-
     public void setupDatabase(){
         SQLiteDatabase database = getWritableDatabase();
 
@@ -53,25 +47,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         statement.executeInsert();
     }
-
-    //updateData
-    public void updateData(String name, String description, Task.Priority priority, Calendar deadline, int id){
-        SQLiteDatabase database = getWritableDatabase();
-        //query to update record
-        String sql = "UPDATE TASKS SET name=?, description=?, priority=?, deadline=? WHERE id=?";
-
-        SQLiteStatement statement = database.compileStatement(sql);
-
-        statement.bindString(1, name);
-        statement.bindString(2, description);
-        statement.bindString(3, priority.toString());
-        statement.bindString(4, format.format(deadline));
-        statement.bindDouble(5, (double)id);
-
-        statement.execute();
-        database.close();
-    }
-
     public Task getTask(String id){
         SQLiteDatabase database = getReadableDatabase();
 

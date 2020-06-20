@@ -143,62 +143,6 @@ public class RecordListActivity extends AppCompatActivity {
         });
         dialogDelete.show();
     }
-
-    private void showDialogUpdate(Activity activity, final int position){
-        final Dialog dialog = new Dialog(activity);
-        dialog.setContentView(R.layout.activity_main);
-        dialog.setTitle("Update");
-
-        final EditText edtTask = dialog.findViewById(R.id.edtName);
-        final EditText edtDuration = dialog.findViewById(R.id.edtDescription);
-        final EditText edtStatus = dialog.findViewById(R.id.edtStatus);
-        Button btnUpdate = dialog.findViewById(R.id.btnUpdate);
-
-//        Toast.makeText(activity, ""+position, Toast.LENGTH_SHORT).show();
-
-        int iddd = position;
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS WHERE id="+iddd);
-        mList.clear();
-        while (cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String task = cursor.getString(1);
-            edtTask.setText(task);
-            String duration = cursor.getString(2);
-            edtDuration.setText(duration);
-            String status = cursor.getString(3);
-            edtStatus.setText(status);
-            //add to list
-            //mList.add(new Task(id, task, duration, status));
-        }
-
-        //set width of dialog
-        int width = (int)(activity.getResources().getDisplayMetrics().widthPixels*0.95);
-        //set hieght of dialog
-        int height = (int)(activity.getResources().getDisplayMetrics().heightPixels*0.7);
-        dialog.getWindow().setLayout(width,height);
-        dialog.show();
-
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                 //   mSQLiteHelper.updateData(
-                         //   edtTask.getText().toString().trim(),
-                       //     edtDuration.getText().toString().trim(),
-                     //       edtStatus.getText().toString().trim(),
-                   //         position);
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Update success", Toast.LENGTH_SHORT).show();
-                }
-                catch (Exception error){
-                    Log.e("Update error", error.getMessage());
-                }
-                updateRecordList();
-            }
-        });
-
-    }
-
     private void updateRecordList() {
         //get all data from sqlite
         Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS ORDER BY deadline ASC");
