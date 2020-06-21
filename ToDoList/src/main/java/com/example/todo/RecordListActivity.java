@@ -49,32 +49,6 @@ public class RecordListActivity extends AppCompatActivity {
 
         //creating table in database
         mSQLiteHelper.setupDatabase();
-
-        //Insert 2 sample tasks, put into pref so it can only added once
-        /*
-        SharedPreferences firstTime = getSharedPreferences("FirstTime", MODE_PRIVATE);
-        if (!firstTime.getBoolean("isFirstTime", false)) {
-            //your code goes here
-            try {
-                mSQLiteHelper.insertData("Mindful breathing".trim(), "15".trim(), "New".trim());
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-
-            try {
-                mSQLiteHelper.insertData("Bedtime breathing".trim(), "15".trim(), "New".trim());
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-            final SharedPreferences pref = getSharedPreferences("FirstTime", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirstTime", true);
-            editor.apply();
-        }
-         */
-
         //get all data from sqlite
         Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS ORDER BY deadline ASC");
         mList.clear();
@@ -118,50 +92,5 @@ public class RecordListActivity extends AppCompatActivity {
         });
     }
 
-    private void showDialogDelete(final int idRecord) {
-        AlertDialog.Builder dialogDelete = new AlertDialog.Builder(RecordListActivity.this);
-        dialogDelete.setTitle("Warning");
-        dialogDelete.setMessage("Are you sure?");
-        dialogDelete.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                try {
-                    MainActivity.mSQLiteHelper.deleteData(idRecord);
-                    Toast.makeText(RecordListActivity.this, "Delete success", Toast.LENGTH_SHORT).show();
-                }
-                catch (Exception e){
-                    Log.e("error", e.getMessage());
-                }
-                updateRecordList();
-            }
-        });
-        dialogDelete.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        dialogDelete.show();
-    }
-    private void updateRecordList() {
-        //get all data from sqlite
-        Cursor cursor = mSQLiteHelper.getData("SELECT * FROM TASKS ORDER BY deadline ASC");
-        mList.clear();
-        while (cursor.moveToNext()){
-            try{
-                int id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String description = cursor.getString(2);
-                Task.Priority priority = Task.Priority.valueOf(cursor.getString(3));
-                Calendar deadline = Calendar.getInstance();
-                deadline.setTime(SQLiteHelper.format.parse(cursor.getString(4)));
-                //add to list
-                mList.add(new Task(id, name, description, priority, deadline));
-            } catch (ParseException e){
-                e.printStackTrace();
-            }
-        }
-        mAdapter.notifyDataSetChanged();
-    }
 
 }
